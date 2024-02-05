@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->timestamps('year');
+            $table->timestamp('year');
             $table->decimal('rank')->default(0);
             $table->text('description');
             $table->softDeletes();
             $table->timestamps();
-            
+
         });
     }
 
