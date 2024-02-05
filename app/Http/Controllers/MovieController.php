@@ -4,10 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
+use App\Http\Resources\MovieResource;
 use App\Models\Movie;
+use App\Repositories\Interfaces\MovieRepositoryInterface;
 
 class MovieController extends Controller
 {
+    public function __construct(public MovieRepositoryInterface $movieRepository)
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -29,7 +35,12 @@ class MovieController extends Controller
      */
     public function store(StoreMovieRequest $request)
     {
-        //
+        $movie = $this->movieRepository->create($request->only('title', 'description', 'year', 'rank'));
+
+        return apiResponse()
+            ->message(__('movie.messages.movie_created'))
+            ->data(new MovieResource($movie))
+            ->send();
     }
 
     /**
@@ -53,7 +64,12 @@ class MovieController extends Controller
      */
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
-        //
+        $movie = $this->movieRepository->update($request->validated(), $movie->id, withTrashed: true);
+
+        return apiResponse()
+            ->message(__('movie.messages.movie_updated'))
+            ->data(new MovieResource($movie))
+            ->send();
     }
 
     /**
