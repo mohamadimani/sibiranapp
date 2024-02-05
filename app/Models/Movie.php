@@ -10,5 +10,5 @@ class Movie extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['title', 'year', 'rank', 'description', 'deleted_by'];
+    protected $fillable = ['title', 'year', 'rank', 'description'];
 }
