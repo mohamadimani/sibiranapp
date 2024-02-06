@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Crew;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,6 @@ class CrewSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Crew::factory()->count(10)->create();
     }
 }

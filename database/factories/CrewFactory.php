@@ -17,7 +17,10 @@ class CrewFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->name(),
+            'family' => fake()->lastName(),
+            'role' => fake()->jobTitle(),
+            'birthdate' => now(),
         ];
     }
 }
