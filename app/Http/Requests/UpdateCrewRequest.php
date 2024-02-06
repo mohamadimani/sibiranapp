@@ -22,7 +22,10 @@ class UpdateCrewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['string'],
+            'family' => ['string'],
+            'role' => [],
+            'birthdate' => [],
         ];
     }
 }
