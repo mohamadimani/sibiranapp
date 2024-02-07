@@ -46,6 +46,7 @@ class MovieController extends Controller
     {
         $movie = $this->movieRepository->create($request->only('title', 'description', 'year', 'rank'));
         $movie->genres()->attach($request->genres);
+        $movie->crews()->attach($request->crews);
 
         return apiResponse()
             ->message(__('movie.messages.movie_created'))
@@ -79,6 +80,7 @@ class MovieController extends Controller
     {
         $movie = $this->movieRepository->update($request->validated(), $movie->id, withTrashed: true);
         $movie->genres()->sync($request->genres);
+        $movie->crews()->sync($request->crews);
 
         return apiResponse()
             ->message(__('movie.messages.movie_updated'))
