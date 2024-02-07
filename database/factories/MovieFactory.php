@@ -17,7 +17,10 @@ class MovieFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->jobTitle(),
+            'description' => fake()->text($maxNbChars = 250),
+            'rank' => fake()->randomFloat(1 ,1,9),
+            'year' => now(),
         ];
     }
 }

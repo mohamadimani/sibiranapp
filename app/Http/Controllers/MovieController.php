@@ -45,6 +45,7 @@ class MovieController extends Controller
     public function store(StoreMovieRequest $request)
     {
         $movie = $this->movieRepository->create($request->only('title', 'description', 'year', 'rank'));
+        $movie->genres()->attach($request->genres);
 
         return apiResponse()
             ->message(__('movie.messages.movie_created'))
@@ -77,6 +78,7 @@ class MovieController extends Controller
     public function update(UpdateMovieRequest $request, Movie $movie)
     {
         $movie = $this->movieRepository->update($request->validated(), $movie->id, withTrashed: true);
+        $movie->genres()->sync($request->genres);
 
         return apiResponse()
             ->message(__('movie.messages.movie_updated'))
