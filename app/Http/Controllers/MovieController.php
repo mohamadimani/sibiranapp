@@ -8,6 +8,7 @@ use App\Http\Resources\MovieCollection;
 use App\Http\Resources\MovieResource;
 use App\Models\Movie;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
+use Illuminate\Support\Facades\Redis;
 
 class MovieController extends Controller
 {
@@ -20,11 +21,12 @@ class MovieController extends Controller
      */
     public function index()
     {
-        $movies = $this->movieRepository->paginate(
-            perPage: config('settings.global.item_per_page'),
-            orderBy: ['created_at', 'desc'],
-        );
-
+        $movies = [];
+        if ($movies = Redis::get('movie_list0')) {
+            $movies = unserialize($movies);
+        } else {
+            $movies = Movie::setMovieListInCatch($this->movieRepository);
+        }
         return apiResponse()
             ->message(__('movie.messages.movies_list'))
             ->data(new MovieCollection($movies))
@@ -48,6 +50,8 @@ class MovieController extends Controller
         $movie->genres()->attach($request->genres);
         $movie->crews()->attach($request->crews);
 
+        Movie::setMovieListInCatch($this->movieRepository);
+        
         return apiResponse()
             ->message(__('movie.messages.movie_created'))
             ->data(new MovieResource($movie))
@@ -82,6 +86,8 @@ class MovieController extends Controller
         $movie->genres()->sync($request->genres);
         $movie->crews()->sync($request->crews);
 
+        Movie::setMovieListInCatch($this->movieRepository);
+
         return apiResponse()
             ->message(__('movie.messages.movie_updated'))
             ->data(new MovieResource($movie))
@@ -94,7 +100,7 @@ class MovieController extends Controller
     public function destroy(Movie $movie)
     {
         $movie = $this->movieRepository->delete($movie->id);
-
+        Movie::setMovieListInCatch($this->movieRepository);
         return apiResponse()
             ->message(__('movie.messages.movie_deleted'))
             ->data([])
