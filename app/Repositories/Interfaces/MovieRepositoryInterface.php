@@ -14,6 +14,7 @@ interface MovieRepositoryInterface
 
     public function find(int $id, array $columns = ['*'], bool $withTrashed = false): ?Model;
 
-    public function paginate(int $perPage = 15, array $columns = ['*'], array $where = [], array $orWhere = [], array $orderBy = [] , bool $withTrashed = false): LengthAwarePaginator;
+    public function paginate(int $perPage = 15, array $columns = ['*'], array $where = [], array $orWhere = [], array $orderBy = [], bool $withTrashed = false): LengthAwarePaginator;
 
+    public function setMovieListInCatch(): LengthAwarePaginator;
 }

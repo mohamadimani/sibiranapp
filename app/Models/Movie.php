@@ -22,14 +22,4 @@ class Movie extends Model
     {
         return $this->belongsToMany(Crew::class, 'crew_movie', 'movie_id', 'crew_id');
     }
-
-    public static function setMovieListInCatch($movieRepository)
-    {
-        $movies = $movieRepository->paginate(
-            perPage: config('settings.global.item_per_page'),
-            orderBy: ['created_at', 'desc'],
-        );
-        Redis::set('movie_list', serialize($movies));
-        return $movies;
-    }
 }

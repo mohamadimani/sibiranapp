@@ -16,4 +16,5 @@ interface CrewRepositoryInterface
 
     public function paginate(int $perPage = 15, array $columns = ['*'], array $where = [], array $orWhere = [], array $orderBy = [] ): LengthAwarePaginator;
 
+    public function setCrewListInCatch(): LengthAwarePaginator;
 }

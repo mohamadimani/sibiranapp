@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\MovieRepositoryInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Redis;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class MovieRepository implements MovieRepositoryInterface
@@ -43,7 +44,10 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function create(array $attributes): Model
     {
-        return $this->model->create($attributes);
+        $result = $this->model->create($attributes);
+        $this->setMovieListInCatch();
+
+        return $result;
     }
 
     /**
@@ -58,6 +62,9 @@ class MovieRepository implements MovieRepositoryInterface
     {
         $record = $this->find($id, withTrashed: $withTrashed);
         $record->update($attributes);
+
+        $this->setMovieListInCatch();
+
         return $record;
     }
 
@@ -69,7 +76,10 @@ class MovieRepository implements MovieRepositoryInterface
      */
     public function delete(int $id): bool
     {
-        return $this->find($id)->delete();
+        $result = $this->find($id)->delete();
+        $this->setMovieListInCatch();
+
+        return $result;
     }
 
     /**
@@ -131,4 +141,18 @@ class MovieRepository implements MovieRepositoryInterface
         return $query->orderBy($orderByColumn, $orderByType)->paginate($perPage, $columns);
     }
 
+    /**
+     * setMovieListInCatch
+     *
+     * @return LengthAwarePaginator
+     */
+    public function setMovieListInCatch(): LengthAwarePaginator
+    {
+        $movies = $this->paginate(
+            perPage: config('settings.global.item_per_page'),
+            orderBy: ['created_at', 'desc'],
+        );
+        Redis::set('movie_list', serialize($movies));
+        return $movies;
+    }
 }

@@ -25,7 +25,7 @@ class MovieController extends Controller
         if ($movies = Redis::get('movie_list')) {
             $movies = unserialize($movies);
         } else {
-            $movies = Movie::setMovieListInCatch($this->movieRepository);
+            $movies = $this->movieRepository->setMovieListInCatch();
         }
         return apiResponse()
             ->message(__('movie.messages.movies_list'))
@@ -50,7 +50,6 @@ class MovieController extends Controller
         $movie->genres()->attach($request->genres);
         $movie->crews()->attach($request->crews);
 
-        Movie::setMovieListInCatch($this->movieRepository);
 
         return apiResponse()
             ->message(__('movie.messages.movie_created'))
@@ -64,7 +63,7 @@ class MovieController extends Controller
     public function show(Movie $movie)
     {
         return apiResponse()
-            ->message('movie.messages.movie_found')
+            ->message(__('movie.messages.movie_found'))
             ->data(new MovieResource($movie))
             ->send();
     }
@@ -86,8 +85,6 @@ class MovieController extends Controller
         $movie->genres()->sync($request->genres);
         $movie->crews()->sync($request->crews);
 
-        Movie::setMovieListInCatch($this->movieRepository);
-
         return apiResponse()
             ->message(__('movie.messages.movie_updated'))
             ->data(new MovieResource($movie))
@@ -100,7 +97,7 @@ class MovieController extends Controller
     public function destroy(Movie $movie)
     {
         $movie = $this->movieRepository->delete($movie->id);
-        Movie::setMovieListInCatch($this->movieRepository);
+
         return apiResponse()
             ->message(__('movie.messages.movie_deleted'))
             ->data([])
