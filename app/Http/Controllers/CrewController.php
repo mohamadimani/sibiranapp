@@ -8,6 +8,7 @@ use App\Http\Resources\CrewCollection;
 use App\Http\Resources\CrewResource;
 use App\Models\Crew;
 use App\Repositories\Interfaces\CrewRepositoryInterface;
+use Illuminate\Support\Facades\Redis;
 
 class CrewController extends Controller
 {
@@ -20,11 +21,12 @@ class CrewController extends Controller
      */
     public function index()
     {
-        $crews = $this->crewRepository->paginate(
-            perPage: config('settings.global.item_per_page'),
-            orderBy: ['created_at', 'desc'],
-        );
-
+        $crews = [];
+        if ($crews = Redis::get('crew_list')) {
+            $crews = unserialize($crews);
+        } else {
+            $crews = $this->crewRepository->setCrewListInCatch();
+        }
         return apiResponse()
             ->message(__('crew.messages.crews_list'))
             ->data(new CrewCollection($crews))
@@ -58,7 +60,7 @@ class CrewController extends Controller
     public function show(Crew $crew)
     {
         return apiResponse()
-        ->message('crew.messages.crew_found')
+        ->message(__('crew.messages.crew_found'))
         ->data(new CrewResource($crew))
         ->send();
     }

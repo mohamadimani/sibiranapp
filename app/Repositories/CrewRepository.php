@@ -7,6 +7,7 @@ use App\Repositories\Interfaces\CrewRepositoryInterface;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Redis;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 
 class CrewRepository implements CrewRepositoryInterface
@@ -43,7 +44,10 @@ class CrewRepository implements CrewRepositoryInterface
      */
     public function create(array $attributes): Model
     {
-        return $this->model->create($attributes);
+        $result = $this->model->create($attributes);
+        $this->setCrewListInCatch();
+
+        return $result;
     }
 
     /**
@@ -57,6 +61,9 @@ class CrewRepository implements CrewRepositoryInterface
     {
         $record = $this->find($id);
         $record->update($attributes);
+
+        $this->setCrewListInCatch();
+
         return $record;
     }
 
@@ -68,7 +75,10 @@ class CrewRepository implements CrewRepositoryInterface
      */
     public function delete(int $id): bool
     {
-        return $this->find($id)->delete();
+        $result = $this->find($id)->delete();
+        $this->setCrewListInCatch();
+
+        return $result;
     }
 
     /**
@@ -119,5 +129,20 @@ class CrewRepository implements CrewRepositoryInterface
         $orderByType = $orderBy[1] ?? 'desc';
 
         return $query->orderBy($orderByColumn, $orderByType)->paginate($perPage, $columns);
+    }
+
+    /**
+     * setCrewListInCatch
+     *
+     * @return LengthAwarePaginator
+     */
+    public function setCrewListInCatch(): LengthAwarePaginator
+    {
+        $crews = $this->paginate(
+            perPage: config('settings.global.item_per_page'),
+            orderBy: ['created_at', 'desc'],
+        );
+        Redis::set('crew_list', serialize($crews));
+        return $crews;
     }
 }

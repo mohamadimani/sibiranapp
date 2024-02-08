@@ -20,6 +20,7 @@ class MovieResource extends JsonResource
             "year" => $this->year,
             "rank" => $this->rank,
             "genres" => new GenreCollection($this->genres),
+            "crews" => new MovieCrewCollection($this->crews),
         ];
     }
 }
