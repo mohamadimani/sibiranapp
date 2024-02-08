@@ -29,7 +29,7 @@ class Movie extends Model
             perPage: config('settings.global.item_per_page'),
             orderBy: ['created_at', 'desc'],
         );
-        Redis::set('movie_list0', serialize($movies));
+        Redis::set('movie_list', serialize($movies));
         return $movies;
     }
 }

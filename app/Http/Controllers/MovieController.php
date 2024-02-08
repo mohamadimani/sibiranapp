@@ -22,7 +22,7 @@ class MovieController extends Controller
     public function index()
     {
         $movies = [];
-        if ($movies = Redis::get('movie_list0')) {
+        if ($movies = Redis::get('movie_list')) {
             $movies = unserialize($movies);
         } else {
             $movies = Movie::setMovieListInCatch($this->movieRepository);
@@ -51,7 +51,7 @@ class MovieController extends Controller
         $movie->crews()->attach($request->crews);
 
         Movie::setMovieListInCatch($this->movieRepository);
-        
+
         return apiResponse()
             ->message(__('movie.messages.movie_created'))
             ->data(new MovieResource($movie))
