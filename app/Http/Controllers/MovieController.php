@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Interfaces\MovieControllerInterface;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 use App\Http\Resources\MovieCollection;
@@ -10,7 +11,7 @@ use App\Models\Movie;
 use App\Repositories\Interfaces\MovieRepositoryInterface;
 use Illuminate\Support\Facades\Redis;
 
-class MovieController extends Controller
+class MovieController extends Controller implements MovieControllerInterface
 {
     public function __construct(public MovieRepositoryInterface $movieRepository)
     {

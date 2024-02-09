@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Interfaces\CrewControllerInterface;
 use App\Http\Requests\StoreCrewRequest;
 use App\Http\Requests\UpdateCrewRequest;
 use App\Http\Resources\CrewCollection;
@@ -10,7 +11,7 @@ use App\Models\Crew;
 use App\Repositories\Interfaces\CrewRepositoryInterface;
 use Illuminate\Support\Facades\Redis;
 
-class CrewController extends Controller
+class CrewController extends Controller implements CrewControllerInterface
 {
     public function __construct(public CrewRepositoryInterface $crewRepository)
     {

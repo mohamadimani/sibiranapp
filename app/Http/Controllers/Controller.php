@@ -9,9 +9,12 @@ use Illuminate\Routing\Controller as BaseController;
 /**
  * @OA\Info(
  *      version="1.0.0",
- *      title="sib irani",
- *      description="sib irani app Doc"
- * )
+ *      title="L5 OpenApi",
+ *      description="L5 Swagger OpenApi description"
+ * ),
+ * @OA\PathItem(
+ *      path="/api/doc",
+ *)
  */
 class Controller extends BaseController
 {
