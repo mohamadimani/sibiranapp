@@ -1,0 +1,405 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "L5 OpenApi",
+        "description": "L5 Swagger OpenApi description",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/doc": {},
+        "/api/crews": {
+            "get": {
+                "tags": [
+                    "Crews"
+                ],
+                "summary": "List Of Crew",
+                "description": "get list of crew",
+                "operationId": "getCrews",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Crews"
+                ],
+                "summary": "store crew",
+                "description": "Display a listing of the resource.",
+                "operationId": "storeCrew",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "family",
+                                    "role",
+                                    "birthdate"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "family": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "number"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/api/crews/{crew}": {
+            "get": {
+                "tags": [
+                    "Crews"
+                ],
+                "summary": "crew list",
+                "description": "get a crew by id",
+                "operationId": "crew",
+                "parameters": [
+                    {
+                        "name": "crew",
+                        "in": "path",
+                        "description": "crew id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Crews"
+                ],
+                "summary": "delete crew",
+                "description": "delete crew",
+                "operationId": "deleteCrew",
+                "parameters": [
+                    {
+                        "name": "crew",
+                        "in": "path",
+                        "description": "crew id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Crews"
+                ],
+                "summary": "update crew",
+                "description": "update crew",
+                "operationId": "updateCrew",
+                "parameters": [
+                    {
+                        "name": "crew",
+                        "in": "path",
+                        "description": "crew id for update",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "family": {
+                                        "type": "string"
+                                    },
+                                    "role": {
+                                        "type": "number"
+                                    },
+                                    "birthdate": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    },
+                    "401": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        },
+        "/api/movies": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "List Of Movie",
+                "description": "get list of movie",
+                "operationId": "getMovies",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "store movie",
+                "description": "Display a listing of the resource.",
+                "operationId": "storeMovie",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "year",
+                                    "rank",
+                                    "description",
+                                    "genres",
+                                    "crews"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "text"
+                                    },
+                                    "year": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "rank": {
+                                        "type": "number"
+                                    },
+                                    "description": {
+                                        "type": "text"
+                                    },
+                                    "genres": {
+                                        "type": "number"
+                                    },
+                                    "crews": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity"
+                    }
+                }
+            }
+        },
+        "/api/movies/{movie}": {
+            "get": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "movie list",
+                "description": "get a movie by id",
+                "operationId": "getMovie",
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "path",
+                        "description": "movie id",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "delete movie",
+                "description": "delete movie",
+                "operationId": "deleteMovie",
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "path",
+                        "description": "movie id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Movies"
+                ],
+                "summary": "update movie",
+                "description": "update movie",
+                "operationId": "updateMovie",
+                "parameters": [
+                    {
+                        "name": "movie",
+                        "in": "path",
+                        "description": "movie id for update",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "text"
+                                    },
+                                    "year": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "rank": {
+                                        "type": "number"
+                                    },
+                                    "description": {
+                                        "type": "text"
+                                    },
+                                    "genres": {
+                                        "type": "number"
+                                    },
+                                    "crews": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        },
+                        "application/json": {
+                            "schema": {}
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Resource Not Found"
+                    },
+                    "401": {
+                        "description": "Bad Request"
+                    }
+                }
+            }
+        }
+    }
+}
